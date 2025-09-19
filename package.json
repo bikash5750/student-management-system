@@ -1,0 +1,20 @@
+{
+  "name": "student_management_system",
+  "version": "1.0.0",
+  "description": "backed of fullstack application for managing student ",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "deepu kumar",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.1",
+    "validator": "^13.15.15"
+  }
+}
