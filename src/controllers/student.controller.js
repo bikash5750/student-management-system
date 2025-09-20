@@ -183,6 +183,4 @@ const logoutStudent = async (req, res) => {
   }
 }
 
-const changePassword = async (req, res) => {
-}
-export { registerStudent, loginStudent, getAllStudents, getStudentById, updateStudent, deleteStudent, logoutStudent, changePassword };
+export { registerStudent, loginStudent, getAllStudents, getStudentById, updateStudent, deleteStudent, logoutStudent,  };
