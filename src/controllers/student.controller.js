@@ -92,15 +92,81 @@ const loginStudent = async (req, res) => {
 };
 
 const getAllStudents = async (req, res) => {
+
+  try {
+    const students = await Student.find().select("-password "); 
+    return res.status(200).json({ students });   
+  } catch (error) {
+    console.error("Error fetching students:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 }
 
 const getStudentById = async (req, res) => {
+  try {
+    const { phone } = req.body;
+    
+    if (!phone) {
+      return res.status(400).json({ message: "Phone number is required" });
+    }
+
+    const student = await Student.findOne({ phone}).select("-password");
+    
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    return res.status(200).json({ student });
+    
+  } catch (error) {
+    console.error("Error fetching student by phone:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 }
 
 const updateStudent = async (req, res) => {
-}
+  try {
+    const { phone, ...updateData } = req.body;
+
+    if (!phone) {
+      return res.status(400).json({ message: "Phone number is required" });
+    }
+
+    const student = await Student.findOneAndUpdate(
+      { phone }, 
+      updateData, 
+      { new: true }
+    ).select("-password");
+
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    return res.json(student);
+
+  } catch (error) {
+    console.error("Error updating student:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 
 const deleteStudent = async (req, res) => {
+  try {
+    const { phone } = req.body;
+    if (!phone) {
+      return res.status(400).json({ message: "Phone number is required" });
+    }
+    const student = await Student.findOneAndDelete({ phone });
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+    return res.status(200).json({ message: "Student deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting student:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+
 }
 
 const logoutStudent = async (req, res) => {
