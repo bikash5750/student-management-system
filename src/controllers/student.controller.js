@@ -1,6 +1,7 @@
 import { Student } from "../models/student.models.js";
 
 
+
 const registerStudent = async (req, res) => {
 
   try {
@@ -45,6 +46,7 @@ const registerStudent = async (req, res) => {
   }
    
 }
+
 const loginStudent = async (req, res) => {
   try {
     const { email, password, phone } = req.body;
@@ -170,6 +172,15 @@ const deleteStudent = async (req, res) => {
 }
 
 const logoutStudent = async (req, res) => {
+  try {
+    res.clearCookie("token");
+    return res.status(200).json({ message: "Logout successful" });
+    
+  } catch (error) {
+    console.error("Error logging out student:", error);
+    return res.status(500).json({ message: "Internal server error" });
+    
+  }
 }
 
 const changePassword = async (req, res) => {
