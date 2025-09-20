@@ -6,7 +6,7 @@ import authenticate from "../middleware/auth.js";
 const studentRouter = Router();
 
 studentRouter.post("/registerstudent",validateEmailPassword, registerStudent);
-studentRouter.post("/loginstudent", validateEmailPassword, loginStudent);
+studentRouter.post("/loginstudent", loginStudent);
 studentRouter.put("/updatestudent", authenticate, updateStudent);
 studentRouter.get("/getallstudents", authenticate,getAllStudents);
 studentRouter.get("/getstudentbyid", authenticate , getStudentById);
