@@ -19,7 +19,7 @@ const authenticate = async (req, res, next) => {
 
     //to cheak as it is blocked or not
     const isBlocked = await redisclient.exists(`token:${token}`);
-    console.log("🔎 Checking Redis for:", `token:${token}`, "exists:", isBlocked);
+    
 
    if (isBlocked) {
   return res.status(401).json({ message: "Token is blocked. Please log in again." });

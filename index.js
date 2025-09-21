@@ -3,6 +3,7 @@ import connectdb from "./src/dbconnection/connectdb.js";
 import studentRouter from "./src/routes/student.routes.js";
 import cookieParser from "cookie-parser";
 import redisclient from "./src/redisconfig/redis.js";
+import ratelimiter from "./src/middleware/ratelimiter.js";
 
 import cors from "cors";
 const app = express();
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors()); 
+app.use(ratelimiter)
 
 app.use("/api/student", studentRouter);
 const startServer = async () => {
