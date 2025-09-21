@@ -2,6 +2,8 @@ import express from "express";
 import connectdb from "./src/dbconnection/connectdb.js";
 import studentRouter from "./src/routes/student.routes.js";
 import cookieParser from "cookie-parser";
+import redisclient from "./src/redisconfig/redis.js";
+
 import cors from "cors";
 const app = express();
 
@@ -13,7 +15,13 @@ app.use(cors());
 app.use("/api/student", studentRouter);
 const startServer = async () => {
   try {
-    await connectdb();
+    // await redisclient.connect();
+    // await connectdb();
+
+    // similentineously connecting to both redis and mongodb
+    await Promise.all([redisclient.connect()],[connectdb()])
+     console.log("redis connected");
+    
   app.listen(3000, () => {
     console.log("server started on port 3000")
   });

@@ -1,4 +1,6 @@
 import { Student } from "../models/student.models.js";
+import redisclient from "../redisconfig/redis.js";
+import jwt from "jsonwebtoken";
 
 
 
@@ -173,6 +175,14 @@ const deleteStudent = async (req, res) => {
 
 const logoutStudent = async (req, res) => {
   try {
+    const{token} = req.cookies;
+    const payload = jwt.decode(token);
+    console.log(payload);
+
+    await redisclient.SET(`token:${token}`,"blocked");
+    await redisclient.EXPIREAT(`token:${token}`,payload.exp);
+    //console.log(" Saved blocked token:", `token:${token}`, "exp:", payload.exp);
+
     res.clearCookie("token");
     return res.status(200).json({ message: "Logout successful" });
     
