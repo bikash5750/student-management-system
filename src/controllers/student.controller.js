@@ -1,6 +1,7 @@
 import { Student } from "../models/student.models.js";
 import redisclient from "../redisconfig/redis.js";
 import jwt from "jsonwebtoken";
+import main from "../aicomm/genai.comm.js";
 
 
 
@@ -192,5 +193,43 @@ const logoutStudent = async (req, res) => {
     
   }
 }
+ const chatHistoryKey = {};
 
-export { registerStudent, loginStudent, getAllStudents, getStudentById, updateStudent, deleteStudent, logoutStudent,  };
+const aicomm = async (req, res) => {
+  try {
+
+    const{phone, msg} = req.body;
+
+    if(!phone || !msg){
+      return res.status(400).json({message: "Phone and msg are required"});
+    }
+
+    //initilization of chat history
+   
+    if(!chatHistoryKey[phone]){
+      chatHistoryKey[phone] = [];
+    }
+
+
+    const history = chatHistoryKey[phone];
+     const promptmessage = [
+      ...history,
+      { role: "user", parts: [{ text: msg }] }
+    ];
+
+    const answer = await main(promptmessage);
+    history.push({ role: "user", parts: [{ text: msg }] });
+    history.push({ role: "model", parts: [{ text: answer }] });
+
+  console.log("AI response history is:", JSON.stringify(history, null, 2));
+    res.status(200).json({ answer });
+
+
+    
+  } catch (error) {
+    console.error("Error in AI communication:", error);
+    return res.status(500).json({message: "Internal server error"});
+  }
+}
+
+export { registerStudent, loginStudent, getAllStudents, getStudentById, updateStudent, deleteStudent, logoutStudent, aicomm };
