@@ -193,8 +193,8 @@ const logoutStudent = async (req, res) => {
     
   }
 }
- const chatHistoryKey = {};
-
+const chatHistoryKey = {};
+//have to store chat history for each user based on phone number in database or in memory here for now in memory
 const aicomm = async (req, res) => {
   try {
 
